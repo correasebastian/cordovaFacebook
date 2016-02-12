@@ -10,11 +10,13 @@ angular.module('starter.controllers', [])
     of = ngFB;
 
     ngFB.init({
-        appId: '1021625004561044'
+        appId: '1021625004561044',
+        tokenStore: localStorage, //override sessionStorage
+        oauthRedirectURL:  'http://localhost:8100/'+ 'templates/oauthcallback.html' //override the default  host + oauthcallback.html
     });
 
     $scope.login = function() {
-        debugger;
+        // debugger;
         ngFB.login(options)
             .then(function(res) {
                 console.log('ok', res)
