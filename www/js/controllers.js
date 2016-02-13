@@ -12,7 +12,7 @@ angular.module('starter.controllers', [])
     ngFB.init({
         appId: '1021625004561044',
         tokenStore: localStorage, //override sessionStorage
-        oauthRedirectURL:  'http://localhost:8100/'+ 'templates/oauthcallback.html' //override the default  host + oauthcallback.html
+        oauthRedirectURL: 'http://localhost:8100/' + 'templates/oauthcallback.html' //override the default  host + oauthcallback.html
     });
 
     $scope.login = function() {
@@ -58,8 +58,14 @@ angular.module('starter.controllers', [])
     $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope) {
-    $scope.settings = {
-        enableFriends: true
-    };
+.controller('AccountCtrl', function($scope, $cordovaFacebook) {
+    $scope.login = function() {
+        $cordovaFacebook.login(["email"])
+            .then(function(success) {
+                console.log('success', success)
+            })
+            .catch(function(error) {
+                console.log('error', error)
+            })
+    }
 });
