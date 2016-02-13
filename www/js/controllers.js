@@ -60,12 +60,48 @@ angular.module('starter.controllers', [])
 
 .controller('AccountCtrl', function($scope, $cordovaFacebook) {
     $scope.login = function() {
-        $cordovaFacebook.login(["email"])
+        $cordovaFacebook.login(["public_profile", "email"])
             .then(function(success) {
-                console.log('success', success)
+                console.log('success', success);
+                var accessToken = success.authResponse.accessToken;
+                var userID = success.authResponse.userID;
+                var expiresIn = success.authResponse.expiresIn;
+
+                console.log("Login Success" + JSON.stringify(success));
+
+                // STEP - 2 CONVERTING DATE FORMAT
+                var expDate = new Date(new Date().getTime() + expiresIn * 1000).toISOString();
+
+                console.log(expDate);
             })
             .catch(function(error) {
                 console.log('error', error)
             })
+    }
+
+    $scope.me = function() {
+        $cordovaFacebook.api("me", ["public_profile"])
+            .then(function(success) {
+                console.log('public profile', success)
+            })
+            .catch(function(error) {
+                console.log('error', error)
+            })
+    }
+
+    $scope.dialog = function() {
+        var options = {
+            method: "feed",
+            link: "http://example.com",
+            caption: "Such caption, very feed."
+        };
+        $cordovaFacebook.showDialog(options)
+            .then(function(success) {
+                console.log('showDialog', success)
+            })
+            .catch(function(error) {
+                console.log('error', error)
+            })
+
     }
 });
